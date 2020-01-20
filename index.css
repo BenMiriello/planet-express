@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+  }
+  
+#spacejam-header{
+    display: flex;
+    justify-content: center;
+    background-color: #FFE099;
+    height: 2rem;
+    padding: 2rem;
+}
+
+#spacejam-header #spacejam-logo{
+    color: #010101;
+    text-align: center;
+    font-family: Chalkduster, fantasy;
+    font-weight: 900;
+    font-size: 2.5rem;
+}
+
+#planet-collection{
+    margin: 2rem;
+}
+
+.planet-box{
+    text-align: center;
+    border: grey solid 1px;
+    width: 15rem;
+    height: 15rem;
+    display: inline-grid;
+    margin: 1rem 1rem;
+}
+
+.planet-image{
+    justify-self: center;
+    height: 12rem;
+    width: 15rem;
+}
+
+.planet-box p{
+    font-family: DejaVu Sans Mono, monospace;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+/* Modal box CSS */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 70px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: Andale Mono, monospace;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
