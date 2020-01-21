@@ -15,3 +15,16 @@ TO DO
 </div>
 
 - Modal box appear when clicking on planet box
+    - look up form for selecting planet of origin looks like this:
+    <form autocomplete="off" action="/action_page.php">
+        <div class="autocomplete" style="width:300px;">
+          <input id="myInput" type="text" name="myCountry" placeholder="Country">
+        </div>
+        <input type="submit">
+      </form>
+
+- Names:
+    - intergalactic
+    - space canoe
+    - intergalactic space canoe
+    -
