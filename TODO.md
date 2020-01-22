@@ -27,4 +27,7 @@ TO DO
     - intergalactic
     - space canoe
     - intergalactic space canoe
-    -
+    - separate out a function for: fill flights drop down
+      - call that function whenever the buy modal div is shown
+    - default to-do origin: earth
+    

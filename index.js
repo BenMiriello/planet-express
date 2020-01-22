@@ -85,28 +85,31 @@ function createBuyModalBox(planetsArray){
   flightsDropDown.className = "dropDown"
   flightsDropDown.id = "flights-drop-down"
 
-  // - get planet id from origin drop down
-  // - fetch url "localhost3000/planets/origin.id/departing_flights"
-  // - fetch (departing_flights url)
-  // - response array of flights forEach of them create an <option></option>
-   
-   
+  let buyButton = document.createElement('button')
+    buyButton.className = "buy-button"
+    buyButton.type = "submit"
+    buyButton.innerText = "Purchase Ticket"
+
+  let numberTicketsDropDown = document.createElement('select')
+    numberTicketsDropDown.className = "dropDown"
+    numberTicketsDropDown.id = "number-tickets-drop-down"
+  
   // append origin and destination to the div
   containOriginDestinationDiv.append(originDropDown, destinationDropDown)
-
+  
   //  append closing button, origin/destination dropdowns, flights dropdown to the modal content
-  modalContent.append(spanModal, containOriginDestinationDiv, flightsDropDown)
-
+  modalContent.append(spanModal, containOriginDestinationDiv, flightsDropDown, numberTicketsDropDown, buyButton)
+  
   //  append modal content to the entire box
   modalDiv.append(modalContent)
-
+  
   //  append to the body of the html page
   body.appendChild(modalDiv)
-
+  
   spanModal.onclick = function() {
-  modalDiv.style.display = "none";
+    modalDiv.style.display = "none";
   }
-
+  
   window.onclick = function(event) {
     if (event.target == modalDiv) {
       modalDiv.style.display = "none";
@@ -122,8 +125,13 @@ function createBuyModalBox(planetsArray){
       destinationDropDown.value = e.target.dataset.id[1]
     })
   })
-
+  
   containOriginDestinationDiv.addEventListener("change", () => {
+    
+    // - get planet id from origin drop down
+    // - fetch url "localhost3000/planets/origin.id/departing_flights"
+    // - fetch (departing_flights url)
+    // - response array of flights forEach of them create an <option></option>
     
     // separate this all out as a function and call the function also from other places
     flightsDropDown.innerHTML = ""
@@ -146,7 +154,19 @@ function createBuyModalBox(planetsArray){
             flightOption.value = flight.id
             flightOption.innerText = `Departing: ${departingMonth}/${departingDay}/${departingYear} | Arriving: ${arrivingMonth}/${arrivingDay}/${arrivingYear}`
           
-            flightsDropDown.append(flightOption)
+          flightsDropDown.append(flightOption)
+
+          flightsDropDown.addEventListener("change", () => {
+            // debugger
+            remainingTickets = flight.remaining_tickets 
+            
+            for (let i = 1; i < remainingTickets && i < 20; i++) {
+              let numberOption = document.createElement('option')
+                numberOption.value = // planet.id
+                numberOption.innerText = `${i}`// planet.name
+                numberTicketsDropDown.append(numberOption)
+            }
+          })
         }
       })
     })
