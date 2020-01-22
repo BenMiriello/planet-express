@@ -57,6 +57,9 @@ function createBuyModalBox(planetsArray){
   spanModal.className = "close"
   spanModal.innerText = "x"
 
+  let containOriginDestinationDiv = document.createElement('div')
+  containOriginDestinationDiv.className = "origin-destination-options"
+
   let originDropDown = document.createElement('select')
   originDropDown.className = "dropDown"
   originDropDown.id = "origin-drop-down"
@@ -77,8 +80,22 @@ function createBuyModalBox(planetsArray){
       destinationDropDown.append(destinationOption)
   })
 
-  //  append closing button to the modal content
-  modalContent.append(spanModal, originDropDown, destinationDropDown)
+  // create flights dropdown
+  let flightsDropDown = document.createElement('select')
+  flightsDropDown.className = "dropDown"
+  flightsDropDown.id = "flights-drop-down"
+
+  // - get planet id from origin drop down
+  // - fetch url "localhost3000/planets/origin.id/departing_flights"
+  // - fetch (departing_flights url)
+  // - response array of flights forEach of them create an <option></option>
+   
+   
+  // append origin and destination to the div
+  containOriginDestinationDiv.append(originDropDown, destinationDropDown)
+
+  //  append closing button, origin/destination dropdowns, flights dropdown to the modal content
+  modalContent.append(spanModal, containOriginDestinationDiv, flightsDropDown)
 
   //  append modal content to the entire box
   modalDiv.append(modalContent)
@@ -105,4 +122,48 @@ function createBuyModalBox(planetsArray){
       destinationDropDown.value = e.target.dataset.id[1]
     })
   })
+
+  containOriginDestinationDiv.addEventListener("change", () => {
+    
+    // separate this all out as a function and call the function also from other places
+    flightsDropDown.innerHTML = ""
+    let originId = parseInt(originDropDown.value)
+    let destinationId = parseInt(destinationDropDown.value)
+    fetch(`http://localhost:3000/planets/${originId}/departing_flights`)
+    .then(r => r.json())
+    .then(flights => {
+      flights.forEach(flight => {
+        if (flight.destination_id === destinationId) {
+          let departingYear = flight.departure.split("-")[0]
+          let departingMonth = flight.departure.split("-")[1]
+          let departingDay = flight.departure.split("-")[2].split("T")[0]
+          
+          let arrivingYear = flight.arrival.split("-")[0]
+          let arrivingMonth = flight.arrival.split("-")[1]
+          let arrivingDay = flight.arrival.split("-")[2].split("T")[0]
+          
+          let flightOption = document.createElement('option')
+            flightOption.value = flight.id
+            flightOption.innerText = `Departing: ${departingMonth}/${departingDay}/${departingYear} | Arriving: ${arrivingMonth}/${arrivingDay}/${arrivingYear}`
+          
+            flightsDropDown.append(flightOption)
+        }
+      })
+    })
+  })
 }
+
+// flight.departure.split("-")
+// (3) ["2020", "01", "30T00:00:00.000Z"]
+// flight.departure.split("-")[0]
+// "2020"
+// flight.departure.split("-")[1]
+// "01"
+// flight.departure.split("-")[3]
+// undefined
+// flight.departure.split("-")[2]
+// "30T00:00:00.000Z"
+// flight.departure.split("-")[2].split("T")
+// (2) ["30", "00:00:00.000Z"]
+// flight.departure.split("-")[2].split("T")[0]
+// "30"
