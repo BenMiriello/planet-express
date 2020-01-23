@@ -91,11 +91,6 @@ function createBuyModalBox(planetsArray){
     originOption.className = "origin-option"
     originOption.innerText = planet.name
     originDropDown.append(originOption)
-    let destinationOption = document.createElement('option')
-    destinationOption.value = planet.id
-    destinationOption.className = "destination-option"
-    destinationOption.innerText = planet.name
-    destinationDropDown.append(destinationOption)
   })
   
   // create flights dropdown
@@ -159,8 +154,13 @@ function createBuyModalBox(planetsArray){
       spanModal.style.display = "block"
       let destinationDropDown = document.querySelector("#destination-drop-down")
       destinationDropDown.value = e.target.dataset.id[1]
-      // destinationDropDown.innerText = e.currentTarget.innerText
-      // debugger
+   
+      // moved creation of the destination drop down here to get the planet that clicked on. Still a little bug on it though
+      let destinationOption = document.createElement('option')
+      destinationOption.value = e.currentTarget.dataset.id[1]
+      destinationOption.className = "destination-option"
+      destinationOption.innerText = e.currentTarget.innerText
+      destinationDropDown.append(destinationOption)
     })
   })
   
