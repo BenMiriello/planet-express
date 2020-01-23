@@ -5,6 +5,7 @@ const planetsCollection = document.querySelector('#planet-collection')
 const body = document.querySelector('body')
 const planetDivsArray = []
 let planetsArray = []
+let ticketsArray = []
 
 // First fetch, to display all planets in there respective boxes
 fetch(planetsUrl)
@@ -83,6 +84,7 @@ function createBuyModalBox(planetsArray){
   let destinationDropDown = document.createElement('select')
   destinationDropDown.className = "dropDown"
   destinationDropDown.id = "destination-drop-down"
+  destinationDropDown.innerText = " "
   
   planetsArray.forEach((planet) => 
   {
@@ -147,9 +149,9 @@ function createBuyModalBox(planetsArray){
     }
   }
   
+
   divPlanetBoxes.forEach(div => {
     div.addEventListener("click", (e) => {
-      // debugger
       let spanModal = document.querySelector("#buyModal")
       spanModal.style.display = "block"
       let destinationDropDown = document.querySelector("#destination-drop-down")
@@ -159,6 +161,7 @@ function createBuyModalBox(planetsArray){
       let destinationOption = document.createElement('option')
       destinationOption.value = e.currentTarget.dataset.id[1]
       destinationOption.className = "destination-option"
+      destinationDropDown.innerHTML = " "
       destinationOption.innerText = e.currentTarget.innerText
       destinationDropDown.append(destinationOption)
     })
@@ -200,15 +203,52 @@ function createBuyModalBox(planetsArray){
             
             for (let i = 1; i < remainingTickets && i < 21; i++) {
               let numberOption = document.createElement('option')
-                numberOption.value = // planet.id
+                // numberOption.value = // planet.id
                 numberOption.innerText = i // planet.name
                 numberTicketsDropDown.append(numberOption)
             }
           })
         }
       })
+    }) 
+  })
+
+  const buyBtn = document.querySelector(".buy-button")
+  
+  buyBtn.addEventListener("click", (event) => {
+    
+    let flight_id = parseInt(event.target.parentElement.querySelector('#flights-drop-down').value)
+    // debugger
+
+  fetch("http://localhost:3000/tickets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      flight_id ,
+      price: 100
+    })
+    })
+    .then(r => r.json())
+    .then(ticket => {
+        let ticketsListUl = document.querySelector('.tickets-list')
+        // debugger
+        let ticketsLi = document.createElement('li')
+        ticketsLi.className = "flight-ticket"
+        ticketsLi.innerText = ticket.id
+        ticketsListUl.append(ticketsLi)
+        
+        modalDiv.style.display = "none";
+        // debugger
     })
   })
+  
+
+  
+  
+
 }
 
 // flight.departure.split("-")
