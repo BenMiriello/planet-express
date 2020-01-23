@@ -39,6 +39,8 @@ function turnEachPlanetsToHTML(planetObj){
     planetDivsArray.push(div)
 }
 
+// function renderOriginDestinationDropDowns
+
 // modal box creation
 function createBuyModalBox(planetsArray){
   let divPlanetBoxes = document.querySelectorAll('.planet-box')
@@ -60,45 +62,73 @@ function createBuyModalBox(planetsArray){
   let containOriginDestinationDiv = document.createElement('div')
   containOriginDestinationDiv.className = "origin-destination-options"
 
+  let fromToDiv = document.createElement('div')
+  fromToDiv.className = "from-to-text"
+  
+  let originPTag = document.createElement('p')
+  originPTag.className = "origin-p-tag"
+  originPTag.innerText = "From: "
+  
+  let destinationPTag = document.createElement('p')
+  destinationPTag.className = "destination-p-tag"
+  destinationPTag.innerText = "To: "
+  
+  let originDestinationDropDiv = document.createElement('div')
+  originDestinationDropDiv.className = "origin-destination-drop-div"
+
   let originDropDown = document.createElement('select')
   originDropDown.className = "dropDown"
   originDropDown.id = "origin-drop-down"
-
+  
   let destinationDropDown = document.createElement('select')
   destinationDropDown.className = "dropDown"
   destinationDropDown.id = "destination-drop-down"
-
+  
   planetsArray.forEach((planet) => 
   {
     let originOption = document.createElement('option')
-      originOption.value = planet.id
-      originOption.innerText = planet.name
-      originDropDown.append(originOption)
+    originOption.value = planet.id
+    originOption.className = "origin-option"
+    originOption.innerText = planet.name
+    originDropDown.append(originOption)
     let destinationOption = document.createElement('option')
-      destinationOption.value = planet.id
-      destinationOption.innerText = planet.name
-      destinationDropDown.append(destinationOption)
+    destinationOption.value = planet.id
+    destinationOption.className = "destination-option"
+    destinationOption.innerText = planet.name
+    destinationDropDown.append(destinationOption)
   })
-
+  
   // create flights dropdown
   let flightsDropDown = document.createElement('select')
   flightsDropDown.className = "dropDown"
   flightsDropDown.id = "flights-drop-down"
-
+  
   let buyButton = document.createElement('button')
-    buyButton.className = "buy-button"
-    buyButton.type = "submit"
-    buyButton.innerText = "Purchase Ticket"
-
+  buyButton.className = "buy-button"
+  buyButton.type = "submit"
+  buyButton.innerText = "Purchase Ticket"
+  
   let numberTicketsDropDown = document.createElement('select')
-    numberTicketsDropDown.className = "dropDown"
-    numberTicketsDropDown.id = "number-tickets-drop-down"
+  numberTicketsDropDown.className = "dropDown"
+  numberTicketsDropDown.id = "number-tickets-drop-down"
+  
+  let ticketsFlightsDiv = document.createElement('div')
+  ticketsFlightsDiv.className = "tickets-flight-container"
+  
+  let ticketsPTag = document.createElement('p')
+  ticketsPTag.innerText = "Tickets: "
+
+  originDestinationDropDiv.append(originDropDown, destinationDropDown)
+  
+  fromToDiv.append(originPTag, destinationPTag)
+  
+  ticketsFlightsDiv.append(ticketsPTag, flightsDropDown, numberTicketsDropDown)
   
   // append origin and destination to the div
-  containOriginDestinationDiv.append(originDropDown, destinationDropDown)
+  containOriginDestinationDiv.append(fromToDiv, originDestinationDropDiv)
   
   //  append closing button, origin/destination dropdowns, flights dropdown to the modal content
-  modalContent.append(spanModal, containOriginDestinationDiv, flightsDropDown, numberTicketsDropDown, buyButton)
+  modalContent.append(spanModal, containOriginDestinationDiv, ticketsFlightsDiv, buyButton)
   
   //  append modal content to the entire box
   modalDiv.append(modalContent)
@@ -157,13 +187,13 @@ function createBuyModalBox(planetsArray){
           flightsDropDown.append(flightOption)
 
           flightsDropDown.addEventListener("change", () => {
-            // debugger
-            remainingTickets = flight.remaining_tickets 
+            numberTicketsDropDown.innerHTML = ""
+            let remainingTickets = flight.remaining_tickets 
             
-            for (let i = 1; i < remainingTickets && i < 20; i++) {
+            for (let i = 1; i < remainingTickets && i < 21; i++) {
               let numberOption = document.createElement('option')
                 numberOption.value = // planet.id
-                numberOption.innerText = `${i}`// planet.name
+                numberOption.innerText = i // planet.name
                 numberTicketsDropDown.append(numberOption)
             }
           })
