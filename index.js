@@ -108,6 +108,7 @@ function createBuyModalBox(planetsArray){
   buyButton.type = "submit"
   buyButton.innerText = "Purchase Ticket"
   
+  // create tickets dropdown
   let numberTicketsDropDown = document.createElement('select')
   numberTicketsDropDown.className = "dropDown"
   numberTicketsDropDown.id = "number-tickets-drop-down"
@@ -115,14 +116,19 @@ function createBuyModalBox(planetsArray){
   let ticketsFlightsDiv = document.createElement('div')
   ticketsFlightsDiv.className = "tickets-flight-container"
   
+  let flightsPTag = document.createElement('p')
+  flightsPTag.className = "tickets-flights-p-tag"
+  flightsPTag.innerText = "Flights: "
+
   let ticketsPTag = document.createElement('p')
+  ticketsPTag.className = "tickets-flights-p-tag"
   ticketsPTag.innerText = "Tickets: "
 
   originDestinationDropDiv.append(originDropDown, destinationDropDown)
   
   fromToDiv.append(originPTag, destinationPTag)
   
-  ticketsFlightsDiv.append(ticketsPTag, flightsDropDown, numberTicketsDropDown)
+  ticketsFlightsDiv.append(flightsPTag, flightsDropDown, ticketsPTag, numberTicketsDropDown)
   
   // append origin and destination to the div
   containOriginDestinationDiv.append(fromToDiv, originDestinationDropDiv)
@@ -153,6 +159,8 @@ function createBuyModalBox(planetsArray){
       spanModal.style.display = "block"
       let destinationDropDown = document.querySelector("#destination-drop-down")
       destinationDropDown.value = e.target.dataset.id[1]
+      // destinationDropDown.innerText = e.currentTarget.innerText
+      // debugger
     })
   })
   
