@@ -29,25 +29,25 @@ fetch("http://localhost:3000/tickets")
 })
 
 function turnEachPlanetsToHTML(planetObj){
-    let div = document.createElement('div')
-    div.className = "planet-box"
-    div.dataset.id = `d${planetObj.id}`
+  let div = document.createElement('div')
+  div.className = "planet-box"
+  div.dataset.id = `d${planetObj.id}`
 
-    let img = document.createElement('img')
-    img.className = "planet-image"
-    img.src = planetObj.image
-    img.alt = planetObj.name
-    img.dataset.id = `i${planetObj.id}`
-    
-    let p = document.createElement('p')
-    p.innerText = planetObj.name
-    p.dataset.id = `p${planetObj.id}`
+  let img = document.createElement('img')
+  img.className = "planet-image"
+  img.src = planetObj.image
+  img.alt = planetObj.name
+  img.dataset.id = `i${planetObj.id}`
+  
+  let p = document.createElement('p')
+  p.innerText = planetObj.name
+  p.dataset.id = `p${planetObj.id}`
 
-    div.append(img, p)
+  div.append(img, p)
 
+  planetsCollection.append(div)
+  planetDivsArray.push(div)
 
-    planetsCollection.append(div)
-    planetDivsArray.push(div)
 }
 
 // function renderOriginDestinationDropDowns
@@ -55,7 +55,7 @@ function turnEachPlanetsToHTML(planetObj){
 // modal box creation
 function createBuyModalBox(planetsArray){
   let divPlanetBoxes = document.querySelectorAll('.planet-box')
-  
+   
   // modalDiv is the entire box
   let modalDiv = document.createElement('div')
   modalDiv.id = "buyModal"
@@ -166,6 +166,9 @@ function createBuyModalBox(planetsArray){
       spanModal.style.display = "block"
       let destinationDropDown = document.querySelector("#destination-drop-down")
       destinationDropDown.value = e.target.dataset.id[1]
+
+      let originDropDown = document.querySelector("#origin-drop-down")
+      originDropDown.value = 3
    
       // moved creation of the destination drop down here to get the planet that clicked on. Still a little bug on it though
       let destinationOption = document.createElement('option')
@@ -177,43 +180,13 @@ function createBuyModalBox(planetsArray){
 
       // change footer color to planet color
       footer.className = `footer_${e.target.dataset.id[1]}`
+
+      fillFlightsDropDown(originDropDown, destinationDropDown, flightsDropDown, numberTicketsDropDown)
     })
   })
   
   containOriginDestinationDiv.addEventListener("change", () => {
-    
-    // - get planet id from origin drop down
-    // - fetch url "localhost3000/planets/origin.id/departing_flights"
-    // - fetch (departing_flights url)
-    // - response array of flights forEach of them create an <option></option>
-    
-    // separate this all out as a function and call the function also from other places
-    
-    flightsDropDown.innerHTML = ""
-    let originId = parseInt(originDropDown.value)
-    let destinationId = parseInt(destinationDropDown.value)
-    fetch(`http://localhost:3000/planets/${originId}/departing_flights`)
-    .then(r => r.json())
-    .then(flights => {
-      flights.forEach(flight => {
-        if (flight.destination_id === destinationId) {
-
-          renderFlightsDropDown(flight, flightsDropDown)
-
-          flightsDropDown.addEventListener("change", () => {
-            numberTicketsDropDown.innerHTML = ""
-            let remainingTickets = flight.remaining_tickets 
-            
-            for (let i = 1; i < remainingTickets && i < 21; i++) {
-              let numberOption = document.createElement('option')
-                // numberOption.value = // planet.id
-                numberOption.innerText = i // planet.name
-                numberTicketsDropDown.append(numberOption)
-            }
-          })
-        }
-      })
-    }) 
+    fillFlightsDropDown(originDropDown, destinationDropDown, flightsDropDown, numberTicketsDropDown)
   })
 
   const buyBtn = document.querySelector(".buy-button")
@@ -249,6 +222,28 @@ function createBuyModalBox(planetsArray){
         // debugger
     })
   })
+}
+
+function fillFlightsDropDown(originDropDown, destinationDropDown, flightsDropDown, numberTicketsDropDown){
+  flightsDropDown.innerHTML = ""
+  let originId = parseInt(originDropDown.value)
+  let destinationId = parseInt(destinationDropDown.value)
+  fetch(`http://localhost:3000/planets/${originId}/departing_flights`)
+  .then(r => r.json())
+  .then(flights => {
+    flights.forEach(flight => {
+      if (flight.destination_id === destinationId) {
+
+        renderFlightsDropDown(flight, flightsDropDown)
+
+        fillnumberTicketsDropDown(numberTicketsDropDown, flight)
+
+        flightsDropDown.addEventListener("change", () => {
+          fillnumberTicketsDropDown(numberTicketsDropDown, flight)
+        })
+      }
+    })
+  }) 
 }
 
 function renderFlightsDropDown(flight, flightsDropDown){
@@ -295,4 +290,15 @@ function renderTicketLi(ticket){
       event.target.parentElement.remove()
     })
   })
+}
+
+function fillnumberTicketsDropDown(numberTicketsDropDown, flight){
+  numberTicketsDropDown.innerHTML = ""
+  let remainingTickets = flight.remaining_tickets 
+  
+  for (let i = 1; i < remainingTickets && i < 21; i++) {
+    let numberOption = document.createElement('option')
+      numberOption.innerText = i // planet.name
+      numberTicketsDropDown.append(numberOption)
+  }
 }
