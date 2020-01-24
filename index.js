@@ -4,6 +4,7 @@ const planetsUrl = `http://localhost:3000/planets`
 const planetsCollection = document.querySelector('#planet-collection')
 const body = document.querySelector('body')
 const planetDivsArray = []
+const footer = document.querySelector('#footer')
 let planetsArray = []
 let ticketsArray = []
 
@@ -20,29 +21,10 @@ createBuyModalBox(planetsArray)
 
 fetch("http://localhost:3000/tickets")
 .then(r => r.json())
-.then(tickets => {tickets.forEach((ticket) => {
-  let ticketsListUl = document.querySelector('.tickets-list')
-
-  let ticketsLi = document.createElement('li')
-  ticketsLi.className = "flight-ticket"
-  ticketsLi.innerText = ticket.flight.ship_name
-
-  let deleteBtn = document.createElement('button')
-  deleteBtn.className = "delete-button"
-  deleteBtn.innerHTML = "&times;"
-
-  ticketsLi.append(deleteBtn)
-  ticketsListUl.append(ticketsLi)
-
-  deleteBtn.addEventListener("click", (event) => {
-    fetch(`http://localhost:3000/tickets/${ticket.id}`, {
-      method: "DELETE"
-    })
-    .then(r => r.json())
-    .then(() => {
-      event.target.parentElement.remove()
-    })
-  })
+.then(tickets => {
+  console.log(tickets)
+  tickets.forEach((ticket) => {
+  renderTicketLi(ticket)
 })
 })
 
@@ -192,6 +174,9 @@ function createBuyModalBox(planetsArray){
       destinationDropDown.innerHTML = " "
       destinationOption.innerText = e.currentTarget.innerText
       destinationDropDown.append(destinationOption)
+
+      // change footer color to planet color
+      footer.className = `footer_${e.target.dataset.id[1]}`
     })
   })
   
@@ -203,6 +188,7 @@ function createBuyModalBox(planetsArray){
     // - response array of flights forEach of them create an <option></option>
     
     // separate this all out as a function and call the function also from other places
+    
     flightsDropDown.innerHTML = ""
     let originId = parseInt(originDropDown.value)
     let destinationId = parseInt(destinationDropDown.value)
@@ -211,19 +197,8 @@ function createBuyModalBox(planetsArray){
     .then(flights => {
       flights.forEach(flight => {
         if (flight.destination_id === destinationId) {
-          let departingYear = flight.departure.split("-")[0]
-          let departingMonth = flight.departure.split("-")[1]
-          let departingDay = flight.departure.split("-")[2].split("T")[0]
-          
-          let arrivingYear = flight.arrival.split("-")[0]
-          let arrivingMonth = flight.arrival.split("-")[1]
-          let arrivingDay = flight.arrival.split("-")[2].split("T")[0]
-          
-          let flightOption = document.createElement('option')
-            flightOption.value = flight.id
-            flightOption.innerText = `Departing: ${departingMonth}/${departingDay}/${departingYear} | Arriving: ${arrivingMonth}/${arrivingDay}/${arrivingYear}`
-          
-          flightsDropDown.append(flightOption)
+
+          renderFlightsDropDown(flight, flightsDropDown)
 
           flightsDropDown.addEventListener("change", () => {
             numberTicketsDropDown.innerHTML = ""
@@ -256,43 +231,68 @@ function createBuyModalBox(planetsArray){
     },
     body: JSON.stringify({
       flight_id ,
-      price: 100
+      price: 1_000_000
     })
     })
     .then(r => r.json())
     .then(ticket => {
-        let ticketsListUl = document.querySelector('.tickets-list')
+        // let ticketsListUl = document.querySelector('.tickets-list')
+
         // debugger
-        let ticketsLi = document.createElement('li')
-        ticketsLi.className = "flight-ticket"
-        ticketsLi.innerText = ticket.flight.ship_name
+        // let ticketsLi = document.createElement('li')
+        // ticketsLi.className = "flight-ticket"
+        // ticketsLi.innerText = ticket.flight.ship_name
         
-        let deleteBtn = document.createElement('button')
-        deleteBtn.className = "delete-button"
-        deleteBtn.innerHTML = "&times;"
-        
-        ticketsLi.append(deleteBtn)
-        ticketsListUl.append(ticketsLi)
+        renderTicketLi(ticket)
 
         modalDiv.style.display = "none";
         // debugger
     })
   })
-
-
 }
 
-// flight.departure.split("-")
-// (3) ["2020", "01", "30T00:00:00.000Z"]
-// flight.departure.split("-")[0]
-// "2020"
-// flight.departure.split("-")[1]
-// "01"
-// flight.departure.split("-")[3]
-// undefined
-// flight.departure.split("-")[2]
-// "30T00:00:00.000Z"
-// flight.departure.split("-")[2].split("T")
-// (2) ["30", "00:00:00.000Z"]
-// flight.departure.split("-")[2].split("T")[0]
-// "30"
+function renderFlightsDropDown(flight, flightsDropDown){
+  let departingYear = flight.departure.split("-")[0]
+  let departingMonth = flight.departure.split("-")[1]
+  let departingDay = flight.departure.split("-")[2].split("T")[0]
+  
+  let arrivingYear = flight.arrival.split("-")[0]
+  let arrivingMonth = flight.arrival.split("-")[1]
+  let arrivingDay = flight.arrival.split("-")[2].split("T")[0]
+  
+  let flightOption = document.createElement('option')
+    flightOption.value = flight.id
+    flightOption.innerText = `Departing: ${departingMonth}/${departingDay}/${departingYear} | Arriving: ${arrivingMonth}/${arrivingDay}/${arrivingYear}`
+  
+  flightsDropDown.append(flightOption)
+}
+
+function renderTicketLi(ticket){
+  // problem here is that the .find below returns mercury every time and I don't know why.
+  let ticketOrigin = planetsArray.find(planet => planet.id = ticket.flight.origin_id)
+  let ticketDestination = planetsArray.find(planet => planet.id = ticket.flight.destination_id)
+  let ticketsListUl = document.querySelector('.tickets-list')
+  let ticketsLi = document.createElement('li')
+  ticketsLi.className = "flight-ticket"
+  ticketsLi.innerText = `\nFrom: ${ticketOrigin.name}\nTo: ${ticketDestination.name}\nPrice: ${ticket.price} USD\nDeparting: ${ticket.flight.departure.slice(0,10)}\nArriving: ${ticket.flight.arrival.slice(0,10)}\nDuration: ${ticket.flight.days} days\nFlying on the: ${ticket.flight.ship_name}\n`
+  ticketsListUl.prepend(ticketsLi)
+  modalDiv = document.querySelector("#buyModal")
+  modalDiv.style.display = "none";
+
+  let deleteBtn = document.createElement('button')
+  deleteBtn.className = "delete-button"
+  deleteBtn.innerHTML = "&times;"
+
+  ticketsLi.append(deleteBtn)
+  ticketsListUl.append(ticketsLi)
+
+  deleteBtn.addEventListener("click", (event) => {
+    fetch(`http://localhost:3000/tickets/${ticket.id}`, {
+      method: "DELETE"
+    })
+    .then(r => r.json())
+    .then(() => {
+      event.target.parentElement.remove()
+    })
+  })
+}
