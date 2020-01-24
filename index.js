@@ -128,15 +128,34 @@ function createBuyModalBox(planetsArray){
   flightsPTag.className = "tickets-flights-p-tag"
   flightsPTag.innerText = "Flights: "
 
+
+  let ticketNumberNameDiv = document.createElement("div")
+  ticketNumberNameDiv.className = "ticket-number-name-div"
+
+  let ticketsPassengerNameDiv = document.createElement('div')
+  ticketsPassengerNameDiv.className = "ticket-passenger-name-text"
+
   let ticketsPTag = document.createElement('p')
   ticketsPTag.className = "tickets-flights-p-tag"
   ticketsPTag.innerText = "Tickets: "
 
+  // create nameInput
+  let namePTag = document.createElement("p")
+  namePTag.innerText = "Enter Passenger Names:"
+  namePTag.className = "name-input-p-tag"
+
+  let nameInputField = document.createElement("input")
+  nameInputField.className = "name-input-field"
+
   originDestinationDropDiv.append(originDropDown, destinationDropDown)
   
   fromToDiv.append(originPTag, destinationPTag)
+
+  ticketsPassengerNameDiv.append(ticketsPTag, namePTag)
+
+  ticketNumberNameDiv.append(numberTicketsDropDown, nameInputField)
   
-  ticketsFlightsDiv.append(flightsPTag, flightsDropDown, ticketsPTag, numberTicketsDropDown)
+  ticketsFlightsDiv.append(flightsPTag, flightsDropDown, ticketsPassengerNameDiv, ticketNumberNameDiv)
   
   // append origin and destination to the div
   containOriginDestinationDiv.append(fromToDiv, originDestinationDropDiv)
@@ -200,6 +219,8 @@ function createBuyModalBox(planetsArray){
     let origin_id = parseInt(event.target.parentElement.querySelector("#origin-drop-down").value)
     let destination_id = parseInt(event.target.parentElement.querySelector("#destination-drop-down").value)
 
+    let passenger_names = event.target.parentElement.querySelector(".name-input-field").value
+    debugger
     fetch("http://localhost:3000/tickets", {
       method: "POST",
       headers: {
@@ -210,13 +231,12 @@ function createBuyModalBox(planetsArray){
         flight_id,
         price: (1_000_000 * Math.abs(origin_id - destination_id)),
         passenger_count,
-        passenger_names: "Default Name"
+        passenger_names
       })
       })
       .then(r => r.json())
       .then(ticket => {
         renderTicketLi(ticket)
-
         modalDiv.style.display = "none";
     })
   })
@@ -255,7 +275,7 @@ function renderFlightsDropDown(flight, flightsDropDown){
   
   let flightOption = document.createElement('option')
     flightOption.value = flight.id
-    flightOption.innerText = `Departing: ${departingMonth}/${departingDay}/${departingYear} | Arriving: ${arrivingMonth}/${arrivingDay}/${arrivingYear}`
+    flightOption.innerText = `Departing: ${departingMonth}/${departingDay}/${departingYear} | Arriving: ${arrivingMonth}/${arrivingDay}/${arrivingYear} | Remaining Tickets: ${flight.remaining_tickets}`
   
   flightsDropDown.append(flightOption)
 }
@@ -280,7 +300,17 @@ function renderTicketLi(ticket){
   let ticketsListUl = document.querySelector('.tickets-list')
   let ticketsLi = document.createElement('li')
   ticketsLi.className = "flight-ticket"
-  ticketsLi.innerText = `\nFrom: ${ticketOrigin.name}\nTo: ${ticketDestination.name}\nPrice: ${ticket.price} USD\nDeparting: ${ticket.flight.departure.slice(0,10)}\nArriving: ${ticket.flight.arrival.slice(0,10)}\nDuration: ${ticket.flight.days} days\nNumber of Passengers: ${ticket.passenger_count}\nFlying on the: ${ticket.flight.ship_name}\n`
+  ticketsLi.innerText = `
+    \nFrom: ${ticketOrigin.name}
+    To: ${ticketDestination.name}
+    Price: ${ticket.price} USD
+    Departing: ${ticket.flight.departure.slice(0,10)}
+    Arriving: ${ticket.flight.arrival.slice(0,10)}
+    Duration: ${ticket.flight.days} days
+    Number of Passengers: ${ticket.passenger_count}
+    Flying on the: ${ticket.flight.ship_name}
+    Passengers: ${ticket.passenger_names}
+  `
   ticketsListUl.prepend(ticketsLi)
   modalDiv = document.querySelector("#buyModal")
   modalDiv.style.display = "none";
