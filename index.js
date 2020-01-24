@@ -195,32 +195,29 @@ function createBuyModalBox(planetsArray){
   buyBtn.addEventListener("click", (event) => {
     
     let flight_id = parseInt(event.target.parentElement.querySelector('#flights-drop-down').value)
-    // debugger
+    let passenger_count = parseInt(event.target.parentElement.querySelector("#number-tickets-drop-down").value)
 
-  fetch("http://localhost:3000/tickets", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify({
-      flight_id ,
-      price: 1_000_000
-    })
-    })
-    .then(r => r.json())
-    .then(ticket => {
-        // let ticketsListUl = document.querySelector('.tickets-list')
+    let origin_id = parseInt(event.target.parentElement.querySelector("#origin-drop-down").value)
+    let destination_id = parseInt(event.target.parentElement.querySelector("#destination-drop-down").value)
 
-        // debugger
-        // let ticketsLi = document.createElement('li')
-        // ticketsLi.className = "flight-ticket"
-        // ticketsLi.innerText = ticket.flight.ship_name
-        
+    fetch("http://localhost:3000/tickets", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        flight_id,
+        price: (1_000_000 * Math.abs(origin_id - destination_id)),
+        passenger_count,
+        passenger_names: "Default Name"
+      })
+      })
+      .then(r => r.json())
+      .then(ticket => {
         renderTicketLi(ticket)
 
         modalDiv.style.display = "none";
-        // debugger
     })
   })
 }
@@ -283,7 +280,7 @@ function renderTicketLi(ticket){
   let ticketsListUl = document.querySelector('.tickets-list')
   let ticketsLi = document.createElement('li')
   ticketsLi.className = "flight-ticket"
-  ticketsLi.innerText = `\nFrom: ${ticketOrigin.name}\nTo: ${ticketDestination.name}\nPrice: ${ticket.price} USD\nDeparting: ${ticket.flight.departure.slice(0,10)}\nArriving: ${ticket.flight.arrival.slice(0,10)}\nDuration: ${ticket.flight.days} days\nFlying on the: ${ticket.flight.ship_name}\n`
+  ticketsLi.innerText = `\nFrom: ${ticketOrigin.name}\nTo: ${ticketDestination.name}\nPrice: ${ticket.price} USD\nDeparting: ${ticket.flight.departure.slice(0,10)}\nArriving: ${ticket.flight.arrival.slice(0,10)}\nDuration: ${ticket.flight.days} days\nNumber of Passengers: ${ticket.passenger_count}\nFlying on the: ${ticket.flight.ship_name}\n`
   ticketsListUl.prepend(ticketsLi)
   modalDiv = document.querySelector("#buyModal")
   modalDiv.style.display = "none";
