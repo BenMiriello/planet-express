@@ -9,6 +9,8 @@ body {
     background-color: #000000;
     height: 2rem;
     padding: 2rem;
+    /* margin-left: 10rem; */
+    background: linear-gradient(0deg, rgba(28,81,255,0.5) 0%, rgba(0,0,0,0) 30%);
 }
 
 #spacejam-header #spacejam-logo{
@@ -108,7 +110,7 @@ body {
   
   .close:hover,
   .close:focus {
-    color: black;
+    color: #f0f0f0;
     text-decoration: none;
     cursor: pointer;
   }
@@ -173,7 +175,7 @@ body {
   }
 
   .sidenav {
-    height: 100%;
+    height: 25rem;
     width: 15%;
     position: fixed;
     z-index: 1;
@@ -182,6 +184,9 @@ body {
     background-color: #111;
     overflow-x: hidden;
     padding-top: 5px;
+    border-radius: 1rem;
+    margin-top: 8rem;
+    margin-left: 2rem;
   }
   
   .sidenav p {
@@ -189,19 +194,49 @@ body {
     /* padding: 0 14px; */
     /* justify-content: center; */
     text-decoration: none;
-    font-size: 150%;
+    font-size: 120%;
     color: #f0f0f0;
     font-family: 'Cantarell', sans-serif;
     display: block;
     text-align: center;
-    
+    text-decoration: underline;
   }
   
   .sidenav a:hover {
     color: #f1f1f1;
   }
 
+  .tickets-list{
+    margin-left: 0.2rem;
+    margin-right: 2rem;
+  }
+
   .flight-ticket{
     color: #f0f0f0;
     font-family: 'Cantarell', sans-serif;
+    list-style-type: none;
   }
+
+  .delete-button{
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .delete-button:hover{
+    background-color: dodgerblue;
+    color: #f0f0f0;
+  }
+
+  /* .earth_footer {
+    display: block;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 500px;
+    background: black;
+    background: linear-gradient(0deg, rgba(28,81,255,0.5) 0%, rgba(0,0,0,0) 30%);
+    } */

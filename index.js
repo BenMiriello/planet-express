@@ -18,6 +18,34 @@ planets.forEach((planetObj) => {
 createBuyModalBox(planetsArray)
 })
 
+fetch("http://localhost:3000/tickets")
+.then(r => r.json())
+.then(tickets => {tickets.forEach((ticket) => {
+  let ticketsListUl = document.querySelector('.tickets-list')
+
+  let ticketsLi = document.createElement('li')
+  ticketsLi.className = "flight-ticket"
+  ticketsLi.innerText = ticket.flight.ship_name
+
+  let deleteBtn = document.createElement('button')
+  deleteBtn.className = "delete-button"
+  deleteBtn.innerHTML = "&times;"
+
+  ticketsLi.append(deleteBtn)
+  ticketsListUl.append(ticketsLi)
+
+  deleteBtn.addEventListener("click", (event) => {
+    fetch(`http://localhost:3000/tickets/${ticket.id}`, {
+      method: "DELETE"
+    })
+    .then(r => r.json())
+    .then(() => {
+      event.target.parentElement.remove()
+    })
+  })
+})
+})
+
 function turnEachPlanetsToHTML(planetObj){
     let div = document.createElement('div')
     div.className = "planet-box"
@@ -58,7 +86,7 @@ function createBuyModalBox(planetsArray){
   // creation of the close button of the box
   let spanModal = document.createElement('span')
   spanModal.className = "close"
-  spanModal.innerText = "x"
+  spanModal.innerHTML = "&times;"
 
   let containOriginDestinationDiv = document.createElement('div')
   containOriginDestinationDiv.className = "origin-destination-options"
@@ -237,17 +265,20 @@ function createBuyModalBox(planetsArray){
         // debugger
         let ticketsLi = document.createElement('li')
         ticketsLi.className = "flight-ticket"
-        ticketsLi.innerText = ticket.id
-        ticketsListUl.append(ticketsLi)
+        ticketsLi.innerText = ticket.flight.ship_name
         
+        let deleteBtn = document.createElement('button')
+        deleteBtn.className = "delete-button"
+        deleteBtn.innerHTML = "&times;"
+        
+        ticketsLi.append(deleteBtn)
+        ticketsListUl.append(ticketsLi)
+
         modalDiv.style.display = "none";
         // debugger
     })
   })
-  
 
-  
-  
 
 }
 
