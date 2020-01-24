@@ -35,8 +35,8 @@ TO DO
 Problems: 
 
 - have tickets take a name attribute
-- only bottom row of planets are clickable
-- ticket doesn't delete until page refresh
+<!-- - only bottom row of planets are clickable -->
+<!-- - ticket doesn't delete until page refresh -->
 - not showing enough ticket information
 - not giving enough information in ticket buy card
 - update styling in buy card

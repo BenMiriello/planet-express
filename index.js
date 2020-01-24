@@ -12,7 +12,8 @@ let ticketsArray = []
 fetch(planetsUrl)
 .then(r => r.json())
 .then(planets => {
-planets.forEach((planetObj) => {
+  planets.forEach((planetObj) => {
+  // debugger
   planetsArray.push(planetObj)
     turnEachPlanetsToHTML(planetObj)
   })
@@ -22,7 +23,7 @@ createBuyModalBox(planetsArray)
 fetch("http://localhost:3000/tickets")
 .then(r => r.json())
 .then(tickets => {
-  console.log(tickets)
+  // console.log(tickets)
   tickets.forEach((ticket) => {
   renderTicketLi(ticket)
 })
@@ -264,8 +265,21 @@ function renderFlightsDropDown(flight, flightsDropDown){
 
 function renderTicketLi(ticket){
   // problem here is that the .find below returns mercury every time and I don't know why.
-  let ticketOrigin = planetsArray.find(planet => planet.id = ticket.flight.origin_id)
-  let ticketDestination = planetsArray.find(planet => planet.id = ticket.flight.destination_id)
+
+  // fetch(planetsUrl)
+  // .then(r => r.json())
+  // .then(planets => {
+  //   planets.forEach((planetObj) => {
+  //   planetsArray.push(planetObj)
+  //   })
+  // })
+
+  // console.log(planetsArray[0])  
+  // planetsArray[0].id = 1
+  // console.log(planetsArray[0])
+
+  let ticketOrigin = planetsArray.find(planet => planet.id === ticket.flight.origin_id)
+  let ticketDestination = planetsArray.find(planet => planet.id === ticket.flight.destination_id)
   let ticketsListUl = document.querySelector('.tickets-list')
   let ticketsLi = document.createElement('li')
   ticketsLi.className = "flight-ticket"

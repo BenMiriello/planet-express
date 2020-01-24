@@ -75,6 +75,7 @@ body {
     display: flex;
     justify-content: center;
     margin: auto;
+    /* position: absolute */
 }
 
 /* Modal box CSS */
@@ -255,6 +256,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(104, 124, 156,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
     }
   
   .footer_2 {
@@ -266,6 +268,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(189, 180, 132,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
     }
     
   .footer_3 {
@@ -277,6 +280,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(28,81,255,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
     }
   
   .footer_4 {
@@ -288,6 +292,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(227, 87, 32,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
   }
   
   .footer_5 {
@@ -299,6 +304,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(232, 177, 88,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
   }
   
   .footer_6 {
@@ -310,6 +316,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(227, 206, 102,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
   }
   
   .footer_7 {
@@ -321,6 +328,7 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(53, 32, 214,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
   }
   
   .footer_8 {
@@ -332,5 +340,6 @@ body {
     height: 500px;
     background: black;
     background: linear-gradient(0deg, rgba(97, 137, 237,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: -1
   }
   
