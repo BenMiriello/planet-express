@@ -19,3 +19,8 @@
 - Run command: 
 `bundle && rails db:create && rails db:migrate && rails s`
 
+## Demo
+
+[Video](https://www.youtube.com/watch?v=Kogxr-Shwss)
+
+![](images/app-screenshot.jpg)
