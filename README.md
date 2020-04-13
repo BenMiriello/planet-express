@@ -1,25 +1,21 @@
-# README
+# Planet Express
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### Web App providing tickets to the solar system with realistic orbital transfer windows and travel times.
 
-Things you may want to cover:
+## Technologies
 
-* Ruby version
+### Front End:
+- Built with Vanilla JavaScript and CSS
 
-* System dependencies
+### Back End *[(link)](https://github.com/valentinem1/Planet-Express-API)*:
+- Ruby
+- Rails
+- PostgreSQL
+- Active Model Serializers
 
-* Configuration
+## Installation
 
-* Database creation
+- Open PostgreSQL
+- Run command: 
+`bundle && rails db:create && rails db:migrate && rails s`
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# Planet-Express-FrontEnd
